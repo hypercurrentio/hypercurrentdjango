@@ -16,7 +16,7 @@ In your `settings.py` file in your Django project directory,
 please add the following to the middleware array:
 
 ```python
-'hypercurrentdjango.middleware.HyperCurrentMiddleware'
+'hypercurrent_django.middleware.HyperCurrentMiddleware'
 ```
 
 ## Configuration
