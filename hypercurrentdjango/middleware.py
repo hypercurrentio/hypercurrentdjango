@@ -21,20 +21,23 @@ class HyperCurrentMiddleware:
 
         response = self.get_response(request)
 
-        body = hypercurrent_metering.MeteringRequestDTO(
-            application=request.headers.get(HC_APPLICATION_HEADER, 'clientId'),
-            method="GET",
-            url=request.path,
-            response_code=response.status_code,
-            request_headers=list(request.headers.items()),
-            response_headers=list(response.headers.items()),
-            content_type=response.headers['Content-Type'],
-            remote_host=response.headers['x-forwarded-for'],
-            request_message_size=request.headers['content-length'],
-            response_message_size=request.headers['content-length'],
-            metadata=response[HC_METADATA_HEADER],
-            user_agent=request.headers['user-agent'],
-        )
+        metering_data = {
+            "application": request.headers.get(HC_APPLICATION_HEADER, 'clientId'),
+            "method": "GET",
+            "url": request.path,
+            "response_code": response.status_code,
+            "request_headers": list(request.headers.keys()),
+            "response_headers": list(response.headers.keys()),
+            "content_type": response.headers.get('Content-Type',None),
+            "remote_host": request.headers.get('x-forwarded-for',None),
+            "request_message_size": request.headers.get('content-length',None),
+            "response_message_size": request.headers.get('content-length',None),
+            "user_agent": request.headers.get('user-agent',None)
+        }
+
+        filtered_data = {k: v for k, v in metering_data.items() if v is not None}
+
+        body = hypercurrent_metering.MeteringRequestDTO(**filtered_data)
 
         try:
             self.hypercurrent.meter(body)
