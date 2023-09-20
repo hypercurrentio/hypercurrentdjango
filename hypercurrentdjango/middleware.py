@@ -16,7 +16,7 @@ class HyperCurrentMiddleware:
 
     def __call__(self, request):
 
-        HC_METADATA_HEADER = getattr(settings, 'HYPERCURRENT_METADATA_HEADER', None)
+        HC_METADATA_HEADER = getattr(settings, 'HYPERCURRENT_METADATA_HEADER', "NO_METADATA")
         HC_APPLICATION_HEADER = getattr(settings, 'HYPERCURRENT_APPLICATION_HEADER', "clientId")
 
         start_time = time.time() 
@@ -37,7 +37,8 @@ class HyperCurrentMiddleware:
             "request_message_size": request.headers.get('content-length',None),
             "response_message_size": request.headers.get('content-length',None),
             "user_agent": request.headers.get('user-agent',None),
-            "backend_latency": latency
+            "backend_latency": latency,
+            "metadata": response.headers.get(HC_METADATA_HEADER, None),
         }
 
         filtered_data = {k: v for k, v in metering_data.items() if v is not None}
