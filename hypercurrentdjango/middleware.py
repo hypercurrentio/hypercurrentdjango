@@ -1,42 +1,40 @@
-from django.http import HttpResponse
+from django.conf import settings
 import hypercurrent_metering
-import os
 from hypercurrent_metering.rest import ApiException
 
-class HypercurrentMiddleware:
+
+class HyperCurrentMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
-        # Set up the Hypercurrent API client once
+        HC_API_KEY = getattr(settings, 'HYPERCURRENT_API_KEY', None)
+        HC_API_URL = getattr(settings, 'HYPERCURRENT_API_URL', "https://api.hypercurrent.io/meter/v1/api")
+
         self.hypercurrent = hypercurrent_metering.MeteringControllerApi(hypercurrent_metering.ApiClient())
-        self.hypercurrent.api_client.default_headers["x-api-key"] = os.environ.get('HYPERCURRENT_API_KEY')
-        self.hypercurrent.api_client.configuration.host = os.environ.get('HYPERCURRENT_API_URL',"https://api.hypercurrent.io/meter/v1/api")
+        self.hypercurrent.api_client.default_headers["x-api-key"] = HC_API_KEY
+        self.hypercurrent.api_client.configuration.host = HC_API_URL
 
     def __call__(self, request):
+
+        HC_METADATA_HEADER = getattr(settings, 'HYPERCURRENT_METADATA_HEADER', None)
+        HC_APPLICATION_HEADER = getattr(settings, 'HYPERCURRENT_APPLICATION_HEADER', "clientId")
+
         response = self.get_response(request)
 
         body = hypercurrent_metering.MeteringRequestDTO(
-            application=request.headers.get('clientId', None),
-            method="GET", # REQUIRED
-            url=request.path, # REQUIRED
-            response_code=response.status_code,
-            request_headers=[], # REQUIRED (but can be empty)
-            response_headers=[], # REQUIRED (but can be empty)
-        )
-
-        """
-        # After processing the request and getting the response, send the data to Hypercurrent
-        body = hypercurrent_metering.MeteringRequestDTO(
-            application=request.headers.get('clientId', None),
-            method=request.method,
+            application=request.headers.get(HC_APPLICATION_HEADER, 'clientId'),
+            method="GET",
             url=request.path,
-            request_headers=list(request.headers.items()),  # Convert the header to a list of tuples
-            response_headers=list(response.headers.items()),
             response_code=response.status_code,
+            request_headers=list(request.headers.items()),
+            response_headers=list(response.headers.items()),
             content_type=response['Content-Type'],
-            # Add any other necessary fields here, possibly extracting more info from request and response
+            remote_host=response['x-forwarded-for'],
+            request_message_size=request['content-length'],
+            response_message_size=request['content-length'],
+            metadata=response[HC_METADATA_HEADER],
+            user_agent=request['user-agent'],
         )
-        """
 
         try:
             self.hypercurrent.meter(body)
@@ -44,4 +42,3 @@ class HypercurrentMiddleware:
             print(f"Exception when metering API request: {e}")
 
         return response
-
