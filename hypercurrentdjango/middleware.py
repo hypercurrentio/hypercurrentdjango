@@ -28,12 +28,12 @@ class HyperCurrentMiddleware:
             response_code=response.status_code,
             request_headers=list(request.headers.items()),
             response_headers=list(response.headers.items()),
-            content_type=response['Content-Type'],
-            remote_host=response['x-forwarded-for'],
-            request_message_size=request['content-length'],
-            response_message_size=request['content-length'],
+            content_type=response.headers['Content-Type'],
+            remote_host=response.headers['x-forwarded-for'],
+            request_message_size=request.headers['content-length'],
+            response_message_size=request.headers['content-length'],
             metadata=response[HC_METADATA_HEADER],
-            user_agent=request['user-agent'],
+            user_agent=request.headers['user-agent'],
         )
 
         try:

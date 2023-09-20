@@ -14,7 +14,7 @@ setup(
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     license='Apache Software License',
-    url='https://github.com/yourusername/django_hypercurrent_middleware',  # If you host your code on GitHub.
+    url='https://github.com/hypercurrentio/hypercurrentdjango',
     classifiers=[
         'Framework :: Django',
         'Programming Language :: Python :: 3',
