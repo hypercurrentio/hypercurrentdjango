@@ -6,7 +6,8 @@ Django middleware to dispatch metering metadata for HTTP API calls to HyperCurre
 ## Installation
 
 ```shell
-pip install hypercurrentdjango
+pip install hypercurrent_metering
+pip install hypercurrent_django
 ```
 
 ## Usage

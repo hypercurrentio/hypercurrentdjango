@@ -1,15 +1,15 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='django_hypercurrent_middleware',
-    version='1.11.0',
+    name='hypercurrent_django',
+    version='1.0.0',
     packages=find_packages(),
     install_requires=[
         'Django>=3.0',
         'hypercurrent_metering',  
     ],
     author='HyperCurrent, Inc',
-    author_email='john.demic@hypercurrent.io',
+    author_email='info@hypercurrent.io',
     description='HyperCurrent Middleware for Python Django',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
