@@ -1,7 +1,7 @@
 from django.conf import settings
 import hypercurrent_metering
 from hypercurrent_metering.rest import ApiException
-
+import time
 
 class HyperCurrentMiddleware:
     def __init__(self, get_response):
@@ -19,7 +19,11 @@ class HyperCurrentMiddleware:
         HC_METADATA_HEADER = getattr(settings, 'HYPERCURRENT_METADATA_HEADER', None)
         HC_APPLICATION_HEADER = getattr(settings, 'HYPERCURRENT_APPLICATION_HEADER', "clientId")
 
+        start_time = time.time() 
         response = self.get_response(request)
+        end_time = time.time()
+
+        latency = int((end_time - start_time) * 1000)
 
         metering_data = {
             "application": request.headers.get(HC_APPLICATION_HEADER, 'clientId'),
@@ -32,7 +36,8 @@ class HyperCurrentMiddleware:
             "remote_host": request.headers.get('x-forwarded-for',None),
             "request_message_size": request.headers.get('content-length',None),
             "response_message_size": request.headers.get('content-length',None),
-            "user_agent": request.headers.get('user-agent',None)
+            "user_agent": request.headers.get('user-agent',None),
+            "backend_latency": latency
         }
 
         filtered_data = {k: v for k, v in metering_data.items() if v is not None}
