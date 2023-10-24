@@ -54,7 +54,7 @@ class HyperCurrentMiddleware:
         body = hypercurrent_metering.MeteringRequestDTO(**filtered_data)
 
         try:
-            foo = self.hypercurrent.meter(body)
+            self.hypercurrent.meter(body)
         except Exception as e:
             logger.error(f"Exception when metering API request: {e}")
 

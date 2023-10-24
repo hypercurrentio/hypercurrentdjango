@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='hypercurrent_django',
-    version='1.0.1',
+    version='1.0.3',
     packages=find_packages(),
     install_requires=[
         'Django>=3.0',
