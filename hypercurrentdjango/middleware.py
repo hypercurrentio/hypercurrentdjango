@@ -2,6 +2,8 @@ from django.conf import settings
 import hypercurrent_metering
 from hypercurrent_metering.rest import ApiException
 import time
+import logging
+
 
 class HyperCurrentMiddleware:
     def __init__(self, get_response):
@@ -16,6 +18,8 @@ class HyperCurrentMiddleware:
 
     def __call__(self, request):
 
+        logger = logging.getLogger('hypercurrent_middleware')
+
         HC_METADATA_HEADER = getattr(settings, 'HYPERCURRENT_METADATA_HEADER', "NO_METADATA")
         HC_APPLICATION_HEADER = getattr(settings, 'HYPERCURRENT_APPLICATION_HEADER', "clientId")
 
@@ -25,9 +29,13 @@ class HyperCurrentMiddleware:
 
         latency = int((end_time - start_time) * 1000)
 
+        application_value = request.headers.get(HC_APPLICATION_HEADER, 'clientId')
+        if not application_value:
+            application_value = str(request.user.id) 
+
         metering_data = {
-            "application": request.headers.get(HC_APPLICATION_HEADER, 'clientId'),
-            "method": "GET",
+            "application": application_value,
+            "method": request.method,
             "url": request.path,
             "response_code": response.status_code,
             "request_headers": list(request.headers.keys()),
@@ -35,7 +43,7 @@ class HyperCurrentMiddleware:
             "content_type": response.headers.get('Content-Type',None),
             "remote_host": request.headers.get('x-forwarded-for',None),
             "request_message_size": request.headers.get('content-length',None),
-            "response_message_size": request.headers.get('content-length',None),
+            "response_message_size": response.headers.get('content-length',None),
             "user_agent": request.headers.get('user-agent',None),
             "backend_latency": latency,
             "metadata": response.headers.get(HC_METADATA_HEADER, None),
@@ -46,8 +54,8 @@ class HyperCurrentMiddleware:
         body = hypercurrent_metering.MeteringRequestDTO(**filtered_data)
 
         try:
-            self.hypercurrent.meter(body)
-        except ApiException as e:
-            print(f"Exception when metering API request: {e}")
+            foo = self.hypercurrent.meter(body)
+        except Exception as e:
+            logger.error(f"Exception when metering API request: {e}")
 
         return response
