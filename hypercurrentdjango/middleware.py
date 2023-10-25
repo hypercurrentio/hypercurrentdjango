@@ -29,9 +29,9 @@ class HyperCurrentMiddleware:
 
         latency = int((end_time - start_time) * 1000)
 
-        application_value = request.headers.get(HC_APPLICATION_HEADER, 'clientId')
+        application_value = request.headers.get(HC_APPLICATION_HEADER)
         if not application_value:
-            application_value = str(request.user.id) 
+            application_value = request.user.id 
 
         metering_data = {
             "application": application_value,
