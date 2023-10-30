@@ -36,7 +36,7 @@ class HyperCurrentMiddleware:
         metering_data = {
             "application": application_value,
             "method": request.method,
-            "url": request.path,
+            "url": request.path.rstrip('/'),
             "response_code": response.status_code,
             "request_headers": list(request.headers.keys()),
             "response_headers": list(response.headers.keys()),
