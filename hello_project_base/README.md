@@ -88,4 +88,15 @@ urlpatterns = [
 ## Go To the README at this base of this repository to see how to integrate the middleware.
 See hello_project_base/hello_project_base/settings.py to see example of a project with the Revenoum Middleware integrated
 
+## Run From Project
+
+# Enter in Terminal
+
+```shell
+python manage.py runserver
+```
+
+Visit http://localhost:8000/api/hello/ in your web browser or use a tool like curl to send a GET request. 
+You should receive the response {"message": "Hello, world!"}.
+
 
