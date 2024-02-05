@@ -4,7 +4,7 @@ Steps to integrate Revenium Middleware with any Django Application
 
 ## Project Setup
 
-Open project in desired editor. All commands should be done through the command line
+Open project in your desired editor. All commands should be done through the command line
 
 ### Ensure Django is installed 
 
@@ -90,7 +90,7 @@ See hello_project_base/hello_project_base/settings.py to see example of a projec
 
 ## Run From Project
 
-# Enter in Terminal
+# Enter in Command Line
 
 ```shell
 python manage.py runserver
