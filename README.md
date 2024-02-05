@@ -39,5 +39,5 @@ You should only need to change this if using a
 non-US based HyperCurrent instance (ie, EMEA or customer compute.)
 
 
-# Example
+## Example Application
 See hello_project base file folder to see an example of how the middle ware can be implemented.
