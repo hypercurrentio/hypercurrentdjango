@@ -34,9 +34,9 @@ The default is "clientId".
 
 
 #### __`HYPERCURRENT_API_URL`__
-(__optional__), _string_, the HyperCurrent API URL. 
+(__optional__), _string_, the Revenium API URL. 
 You should only need to change this if using a 
-non-US based HyperCurrent instance (ie, EMEA or customer compute.)
+non-US based Revenium instance (ie, EMEA or customer compute.)
 
 
 ## Example Application
