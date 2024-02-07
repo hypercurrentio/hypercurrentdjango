@@ -86,7 +86,7 @@ urlpatterns = [
 ```
 
 ## Example Project:
-See hello_project_base/hello_project_base/settings.py to see example of a project with the Revenoum Middleware integrated
+See hello_project_base/hello_project_base/settings.py to see example of a project with the Revenium Middleware integrated
 
 ## Run From Project
 
