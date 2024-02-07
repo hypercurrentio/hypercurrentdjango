@@ -1,6 +1,6 @@
-# HyperCurrent Middleware for Python Django
+# Revenium Middleware for Python Django
 
-Django middleware to dispatch metering metadata for HTTP API calls to HyperCurrent.
+Django middleware to dispatch metering metadata for HTTP API calls to Revenium.
 
 
 ## Installation
@@ -23,7 +23,7 @@ please add the following to the middleware array:
 
 #### __`HYPERCURRENT_API_KEY`__
 (__required__), _string_, 
-your [HyperCurrent API Integration Key](https://docs.hypercurrent.io/user-guide/manage/external-configurations/api-integration-keys)
+your [Revenium API Integration Key](https://docs.hypercurrent.io/user-guide/manage/external-configurations/api-integration-keys)
 
 #### __`HYPERCURRENT_APPLICATION_HEADER`__
 (__optional__), _string_, the HTTP header to determine the API consumer.
