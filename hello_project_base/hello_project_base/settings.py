@@ -126,3 +126,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 HYPERCURRENT_API_KEY = 'foo'
+
+HYPERCURRENT_METADATA_HEADER = "arbitrary data that is evaluated by Revenium Metering"
