@@ -127,4 +127,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 HYPERCURRENT_API_KEY = 'foo'
 
-HYPERCURRENT_METADATA_HEADER = "arbitrary data that is evaluated by Revenium Metering"
+# This would tell the Revenium metering policy to extract the value for this header in the API response and save the value in Revenium. 
+# Once saved, this value will be available in the “metadata” property of a Revenium Pricing Rule. in the Revenium platform. 
+# You can use this value in a pricing rule to vary the price or call count of a transaction. For example, if you wished to charge customers .10 * the value of this variable, 
+# you could do so using a pricing rule in Revenium. 
+
+HYPERCURRENT_METADATA_HEADER = 'shippingWeight'
